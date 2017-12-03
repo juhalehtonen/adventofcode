@@ -19,9 +19,13 @@ config :day2, input: "62	1649	1731	76	51	1295	349	719	52	1984	2015	2171	981	1809
 2208	2236	1451	621	1937	1952	865	61	1934	49	1510	50	1767	59	194	1344
 94	2312	2397	333	1192	106	2713	2351	2650	2663	703	157	89	510	1824	125"
 
-config :day2, testinput: "5	1	9	5
+config :day2, testinput1: "5	1	9	5
 7	5	3
 2	4	6	8"
+
+config :day2, testinput2: "5	9	2	8
+9	4	7	3
+3	8	6	5"
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
