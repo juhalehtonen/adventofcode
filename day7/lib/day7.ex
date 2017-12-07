@@ -8,33 +8,49 @@ defmodule Day7 do
   2. Filter out the topmost towers, as they are not relevant to us.
   3. Map out the upper towers of each tower.
   4. Construct two of towers: those that hold something that those that are on top of something
+  5. Compare the two lists of towers and find the one that is a LOWER but is NOT UPPER
   """
   def part1(input \\ @input) do
     Regex.split( ~r/\r|\n|\r\n/, String.trim(input)) # 1
     |> Enum.filter(fn(tower) -> String.contains?(tower, "->") end) # 2
     |> Enum.map(fn(tower) -> get_upper_towers(tower) end) # 3
     |> construct_tower_lists() # 4
+    |> compare_tower_lists() # 5
   end
 
   @doc """
   Get upper towers of a given tower.
+  Returns a map of given lower tower and all upper towers above it.
   """
   def get_upper_towers(tower) do
+    # Split to lower and uppers by the `->`
     [lower, uppers] = tower |> String.split("->", trim: true)
-    lower = String.trim(lower)
+    # Clean lower by removing everything but the name
+    lower = String.replace(lower, ~r/\([^)]*\)/, "") |> String.trim()
+    # Clean uppers by trimming and splitting to list
     uppers = String.trim(uppers) |> String.split(", ")
-
+    # Return map of lower and uppers for each tower
     %{lower: lower, uppers: uppers}
-
-    # Se joka on alimmaisena ei ole minkään näiden päällä. Poistettiin myös jo
-    # ne aiemmat huipputornit, joten ei ole niitä.
-    #
-    # 1. Tee lista kaikista torneista jotka on jonkun päällä.
-    # 2. Tee lista kaikista torneista jotka kannattelee jotakin.
-    # 3. Vertaa näitä. Kannatteleva torni on VAIN listasssa 2, ei listassa 1.
   end
 
   def construct_tower_lists(towers) do
-    # TODO: Construct two lists to compare those
+    # Get the list of lower towers
+    lowers_list = Enum.map(towers, fn(tower) -> tower.lower end) |> Enum.to_list()
+    # Get the list of upper towers and flatten the result
+    uppers_list = Enum.map(towers, fn(tower) ->
+      Enum.map(tower.uppers, fn(tower) -> tower end)
+    end) |> Enum.to_list() |> List.flatten()
+
+    # Return tuple of lowers and uppers
+    {lowers_list, uppers_list}
+  end
+
+  @doc """
+  Compare two given lists and return the difference.
+  """
+  def compare_tower_lists(tower_lists) do
+    {lowers, uppers} = tower_lists
+    # The `--` operator returns the difference between two lists
+    lowers -- uppers
   end
 end
