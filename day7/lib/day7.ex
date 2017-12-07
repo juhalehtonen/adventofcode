@@ -47,10 +47,10 @@ defmodule Day7 do
 
   @doc """
   Compare two given lists and return the difference.
+  The `--` operator returns the difference between two lists
   """
   def compare_tower_lists(tower_lists) do
     {lowers, uppers} = tower_lists
-    # The `--` operator returns the difference between two lists
     lowers -- uppers
   end
 end
